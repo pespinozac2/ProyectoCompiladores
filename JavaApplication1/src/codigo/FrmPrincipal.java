@@ -14,7 +14,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java_cup.runtime.Symbol;
 import javax.swing.JFileChooser;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 /**
  *
  * @author marvi
