@@ -4,6 +4,7 @@
  */
 package codigo;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,16 +15,19 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java_cup.runtime.Symbol;
 import javax.swing.JFileChooser;
+import javax.swing.JPanel;
+import org.fife.ui.rsyntaxtextarea.*;
+import org.fife.ui.rtextarea.*;
 /**
  *
  * @author marvi
  */
 public class FrmPrincipal extends javax.swing.JFrame {
-
+    private RSyntaxTextArea editor;
     /**
      * Creates new form FrmPrincipal
      */
-    public FrmPrincipal() {
+    public FrmPrincipal() { 
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -32,14 +36,20 @@ public class FrmPrincipal extends javax.swing.JFrame {
         int cont = 1;
         
         // Dentro de tu método de inicialización en FrmPrincipal:
-        RSyntaxTextArea editor = new RSyntaxTextArea(20, 60);
+        editor = new RSyntaxTextArea(20, 60);
         editor.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA); // Puedes ajustar el estilo según tus necesidades
         editor.setCodeFoldingEnabled(true);
         
-        String expr = (String) txtResultado.getText();
-        RTextScrollPane sp = new RTextScrollPane(editor);
+        String textoActual = editor.getText();
         
+        String expr = (String) editor.getText();
+        RTextScrollPane sp = new RTextScrollPane(editor);
         sp.setLineNumbersEnabled(true);
+        
+        editor.removeAll();      // panelEditor es el JPanel que agregaste
+        editor.setLayout(new BorderLayout());
+        editor.add(sp, BorderLayout.CENTER);
+  
         Lexer lexer = new Lexer(new StringReader(expr));
         String resultado = "LINEA " + cont + "\t\tSIMBOLO\n";
         while (true) {
@@ -162,9 +172,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        rSyntaxTextAreaDefaultInputMap1 = new org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaDefaultInputMap();
+        rSyntaxTextAreaDefaultInputMap2 = new org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaDefaultInputMap();
+        rSyntaxTextAreaDefaultInputMap3 = new org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaDefaultInputMap();
+        rSyntaxTextAreaDefaultInputMap4 = new org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaDefaultInputMap();
         btnAnalizar = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtResultado = new javax.swing.JTextArea();
         btnArchivo = new javax.swing.JButton();
         btnLimpiarLex = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -175,6 +187,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         btnLimpiarSin = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         txtAnalizarSin = new javax.swing.JTextArea();
+        txtResultado = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -185,11 +198,6 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 btnAnalizarActionPerformed(evt);
             }
         });
-
-        txtResultado.setEditable(true);
-        txtResultado.setColumns(20);
-        txtResultado.setRows(5);
-        jScrollPane1.setViewportView(txtResultado);
 
         btnArchivo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         btnArchivo.setText("Abrir archivo");
@@ -239,43 +247,53 @@ public class FrmPrincipal extends javax.swing.JFrame {
         txtAnalizarSin.setRows(5);
         jScrollPane3.setViewportView(txtAnalizarSin);
 
+        javax.swing.GroupLayout txtResultadoLayout = new javax.swing.GroupLayout(txtResultado);
+        txtResultado.setLayout(txtResultadoLayout);
+        txtResultadoLayout.setHorizontalGroup(
+            txtResultadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        txtResultadoLayout.setVerticalGroup(
+            txtResultadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnArchivo)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btnAnalizarSin)
-                            .addGap(433, 433, 433)
-                            .addComponent(btnLimpiarSin))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 296, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(btnAnalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnLimpiarLex))
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(17, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane3))
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(17, 17, 17)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtResultado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(btnAnalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(btnLimpiarLex))
+                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(btnArchivo)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(btnAnalizarSin)
+                                            .addGap(433, 433, 433)
+                                            .addComponent(btnLimpiarSin)))))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(248, 248, 248)
                                 .addComponent(jLabel1))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(232, 232, 232)
                                 .addComponent(jLabel2)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane3)))
+                        .addGap(0, 11, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -290,7 +308,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
+                    .addComponent(txtResultado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -320,7 +338,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         
         try {
             String ST = new String(Files.readAllBytes(archivo.toPath()));
-            txtResultado.setText(ST);
+            editor.setText(ST);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(FrmPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }catch (IOException ex) {
@@ -330,7 +348,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     private void btnAnalizarSinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarSinActionPerformed
 
-        String ST = txtResultado.getText();
+        String ST = editor.getText();
         Sintax s = new Sintax(new codigo.LexerCup(new StringReader(ST)));
         
         try {
@@ -402,11 +420,14 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnLimpiarSin;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaDefaultInputMap rSyntaxTextAreaDefaultInputMap1;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaDefaultInputMap rSyntaxTextAreaDefaultInputMap2;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaDefaultInputMap rSyntaxTextAreaDefaultInputMap3;
+    private org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaDefaultInputMap rSyntaxTextAreaDefaultInputMap4;
     private javax.swing.JTextArea txtAnalizarSin;
     private javax.swing.JTextArea txtLexico;
-    private javax.swing.JTextArea txtResultado;
+    private javax.swing.JPanel txtResultado;
     // End of variables declaration//GEN-END:variables
 }
